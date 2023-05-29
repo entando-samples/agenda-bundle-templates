@@ -29,4 +29,9 @@ public class ContactServiceImpl implements ContactService {
         return contactRepository.findOneById(id).map(ContactRecord::new);
     }
 
+    @Override
+    public Optional<ContactDto> getContact(Long id) {
+        return contactRepository.findOneById(id).map(ContactDto::new);
+    }
+
 }
