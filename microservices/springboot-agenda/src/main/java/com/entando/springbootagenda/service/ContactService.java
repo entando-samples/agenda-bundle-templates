@@ -11,4 +11,6 @@ public interface ContactService {
     Page<ContactRecord> getAllContacts(Pageable pageable);
 
     Optional<ContactRecord> getContact(Long id);
+
+    void delete(Long id);
 }

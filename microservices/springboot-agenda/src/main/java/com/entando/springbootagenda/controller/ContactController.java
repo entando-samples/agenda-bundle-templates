@@ -10,10 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -49,5 +46,14 @@ public class ContactController {
                 .getContact(id)
                 .map(response -> ResponseEntity.ok().body(response))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    @DeleteMapping("/contacts/{id}")
+    public ResponseEntity<String> deleteContact(@PathVariable Long id) {
+        log.debug("REST request to delete contact: {}", id);
+
+        contactService.delete(id);
+
+        return ResponseEntity.noContent().build();
     }
 }

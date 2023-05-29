@@ -18,6 +18,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -38,6 +39,8 @@ class ContactControllerIT extends PostgreSqlTestContainer {
     public void init() {
         contactsList.add(new ContactEntity(null, "Jon", "doe", "3 Av bridge street", "+33145326745"));
         contactsList.add(new ContactEntity(null, "Jane", "doe", "7 East Side broke", "+01545822705"));
+
+        contactRepository.saveAllAndFlush(contactsList);
     }
 
     @AfterEach
@@ -48,8 +51,6 @@ class ContactControllerIT extends PostgreSqlTestContainer {
     @Test
     @Transactional
     void getAllUsersShouldReturnTheCurrentOrderedListOfUsersByIdAsc() throws Exception {
-        contactRepository.saveAllAndFlush(contactsList);
-
         contactMockMvc
                 .perform(get("/api/contacts?sort=id,asc").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -69,8 +70,6 @@ class ContactControllerIT extends PostgreSqlTestContainer {
     @Test
     @Transactional
     void getAllUsersShouldReturnTheCurrentOrderedListOfUsersByNameAsc() throws Exception {
-        contactRepository.saveAllAndFlush(contactsList);
-
         contactMockMvc
                 .perform(get("/api/contacts?sort=name,asc").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -119,10 +118,26 @@ class ContactControllerIT extends PostgreSqlTestContainer {
     @Test
     @Transactional
     void getUserWithId1234ShouldThrowANotFoundException() throws Exception {
-        contactRepository.saveAllAndFlush(contactsList);
-
         contactMockMvc
                 .perform(get("/api/contacts/1234").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    void deleteUserWithId1ShouldDeleteTheUserInDb() throws Exception {
+        contactMockMvc
+                .perform(delete("/api/contacts/1").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+        assertThat(contactRepository.findOneById(1L)).isNotPresent();
+    }
+
+    @Test
+    @Transactional
+    void deleteANonExistingShouldReturnA204() throws Exception {
+        contactMockMvc
+                .perform(delete("/api/contacts/1234").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
     }
 }
