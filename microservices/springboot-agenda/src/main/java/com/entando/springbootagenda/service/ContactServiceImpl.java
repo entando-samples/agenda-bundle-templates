@@ -30,11 +30,6 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public Optional<ContactDto> getContact(Long id) {
-        return contactRepository.findOneById(id).map(ContactDto::new);
-    }
-
-    @Override
     public void delete(Long id) {
         contactRepository.findOneById(id).ifPresent(contactRepository::delete);
     }
