@@ -89,8 +89,6 @@ class ContactControllerIT extends PostgreSqlTestContainer {
     @Test
     @Transactional
     void getUserWithItsIdShouldReturnTheCorrectUser() throws Exception {
-        contactRepository.saveAllAndFlush(contactsList);
-
         Long currentFirstContactId = contactsList.get(0).getId();
         Long currentSecondContactId = contactsList.get(1).getId();
 
