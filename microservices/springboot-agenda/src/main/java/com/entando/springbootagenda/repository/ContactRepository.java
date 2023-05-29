@@ -1,6 +1,7 @@
 package com.entando.springbootagenda.repository;
 
 import com.entando.springbootagenda.model.entity.ContactEntity;
+
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;

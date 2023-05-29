@@ -18,8 +18,8 @@ public final class PaginationUtil {
      * Generate pagination headers for a Spring Data {@link org.springframework.data.domain.Page} object.
      *
      * @param uriBuilder The URI builder.
-     * @param page The page.
-     * @param <T> The type of object.
+     * @param page       The page.
+     * @param <T>        The type of object.
      * @return http header.
      */
     public static <T> HttpHeaders generatePaginationHttpHeaders(UriComponentsBuilder uriBuilder, Page<T> page) {
@@ -30,15 +30,15 @@ public final class PaginationUtil {
         StringBuilder link = new StringBuilder();
         if (pageNumber < page.getTotalPages() - 1) {
             link.append(prepareLink(uriBuilder, pageNumber + 1, pageSize, "next"))
-                .append(",");
+                    .append(",");
         }
         if (pageNumber > 0) {
             link.append(prepareLink(uriBuilder, pageNumber - 1, pageSize, "prev"))
-                .append(",");
+                    .append(",");
         }
         link.append(prepareLink(uriBuilder, page.getTotalPages() - 1, pageSize, "last"))
-            .append(",")
-            .append(prepareLink(uriBuilder, 0, pageSize, "first"));
+                .append(",")
+                .append(prepareLink(uriBuilder, 0, pageSize, "first"));
         headers.add(HttpHeaders.LINK, link.toString());
         return headers;
     }
@@ -49,9 +49,9 @@ public final class PaginationUtil {
 
     private static String preparePageUri(UriComponentsBuilder uriBuilder, int pageNumber, int pageSize) {
         return uriBuilder.replaceQueryParam("page", Integer.toString(pageNumber))
-            .replaceQueryParam("size", Integer.toString(pageSize))
-            .toUriString()
-            .replace(",", "%2C")
-            .replace(";", "%3B");
+                .replaceQueryParam("size", Integer.toString(pageSize))
+                .toUriString()
+                .replace(",", "%2C")
+                .replace(";", "%3B");
     }
 }

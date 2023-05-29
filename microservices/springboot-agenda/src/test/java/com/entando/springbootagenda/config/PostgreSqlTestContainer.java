@@ -1,6 +1,7 @@
 package com.entando.springbootagenda.config;
 
 import java.util.Collections;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -21,10 +22,10 @@ public abstract class PostgreSqlTestContainer {
         DockerImageName entandoPostgres = DockerImageName.parse("postgres:14.5");
 
         return new PostgreSQLContainer<>(entandoPostgres)
-                    .withDatabaseName("agenda-db")
-                    .withTmpFs(Collections.singletonMap("/testtmpfs", "rw"))
-                    .withLogConsumer(new Slf4jLogConsumer(log))
-                    .withReuse(true);
+                .withDatabaseName("agenda-db")
+                .withTmpFs(Collections.singletonMap("/testtmpfs", "rw"))
+                .withLogConsumer(new Slf4jLogConsumer(log))
+                .withReuse(true);
     }
 
     @DynamicPropertySource
