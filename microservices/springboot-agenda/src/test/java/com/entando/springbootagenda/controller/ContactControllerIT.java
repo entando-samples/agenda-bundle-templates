@@ -89,24 +89,27 @@ class ContactControllerIT extends PostgreSqlTestContainer {
 
     @Test
     @Transactional
-    void getUserWithId1ShouldReturnTheCorrectUser() throws Exception {
+    void getUserWithItsIdShouldReturnTheCorrectUser() throws Exception {
         contactRepository.saveAllAndFlush(contactsList);
 
+        Long currentFirstContactId = contactsList.get(0).getId();
+        Long currentSecondContactId = contactsList.get(1).getId();
+
         contactMockMvc
-                .perform(get("/api/contacts/1").accept(MediaType.APPLICATION_JSON))
+                .perform(get("/api/contacts/" + currentFirstContactId).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.id").value(currentFirstContactId))
                 .andExpect(jsonPath("$.name").value("Jon"))
                 .andExpect(jsonPath("$.lastname").value("doe"))
                 .andExpect(jsonPath("$.address").value("3 Av bridge street"))
                 .andExpect(jsonPath("$.phone").value("+33145326745"));
 
         contactMockMvc
-                .perform(get("/api/contacts/2").accept(MediaType.APPLICATION_JSON))
+                .perform(get("/api/contacts/" + currentSecondContactId).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.id").value(2))
+                .andExpect(jsonPath("$.id").value(currentSecondContactId))
                 .andExpect(jsonPath("$.name").value("Jane"))
                 .andExpect(jsonPath("$.lastname").value("doe"))
                 .andExpect(jsonPath("$.address").value("7 East Side broke"))
