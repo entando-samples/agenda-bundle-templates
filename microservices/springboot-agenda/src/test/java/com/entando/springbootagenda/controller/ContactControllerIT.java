@@ -86,4 +86,40 @@ class ContactControllerIT extends PostgreSqlTestContainer {
                 .andExpect(jsonPath("$.[1].address").value("3 Av bridge street"))
                 .andExpect(jsonPath("$.[1].phone").value("+33145326745"));
     }
+
+    @Test
+    @Transactional
+    void getUserWithId1ShouldReturnTheCorrectUser() throws Exception {
+        contactRepository.saveAllAndFlush(contactsList);
+
+        contactMockMvc
+                .perform(get("/api/contacts/1").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.name").value("Jon"))
+                .andExpect(jsonPath("$.lastname").value("doe"))
+                .andExpect(jsonPath("$.address").value("3 Av bridge street"))
+                .andExpect(jsonPath("$.phone").value("+33145326745"));
+
+        contactMockMvc
+                .perform(get("/api/contacts/2").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.id").value(2))
+                .andExpect(jsonPath("$.name").value("Jane"))
+                .andExpect(jsonPath("$.lastname").value("doe"))
+                .andExpect(jsonPath("$.address").value("7 East Side broke"))
+                .andExpect(jsonPath("$.phone").value("+01545822705"));
+    }
+
+    @Test
+    @Transactional
+    void getUserWithId1234ShouldThrowANotFoundException() throws Exception {
+        contactRepository.saveAllAndFlush(contactsList);
+
+        contactMockMvc
+                .perform(get("/api/contacts/1234").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
 }
