@@ -1,7 +1,7 @@
 package com.entando.springbootagenda.controller;
 
+import com.entando.springbootagenda.model.record.ContactRecord;
 import com.entando.springbootagenda.service.ContactService;
-import com.entando.springbootagenda.service.dto.ContactDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +29,10 @@ public class ContactController {
     }
 
     @GetMapping("/contacts")
-    public ResponseEntity<List<ContactDto>> getAllContacts(Pageable pageable) {
+    public ResponseEntity<List<ContactRecord>> getAllContacts(Pageable pageable) {
         log.debug("REST request to get all Contacts");
 
-        final Page<ContactDto> page = contactService.getAllContacts(pageable);
+        final Page<ContactRecord> page = contactService.getAllContacts(pageable);
 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
