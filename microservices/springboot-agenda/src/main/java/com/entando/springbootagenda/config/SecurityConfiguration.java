@@ -14,10 +14,11 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
-        return http
+        return http.csrf()
+                .disable()
+                .securityMatcher("/**")
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers(new AntPathRequestMatcher("/api/**")).permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
                 .build();
     }
 }
