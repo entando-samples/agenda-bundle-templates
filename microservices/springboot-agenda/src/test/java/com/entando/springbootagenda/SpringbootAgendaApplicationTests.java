@@ -1,7 +1,6 @@
 package com.entando.springbootagenda;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
 
 import com.entando.springbootagenda.service.mapper.ContactMapper;
 import org.junit.jupiter.api.Test;
