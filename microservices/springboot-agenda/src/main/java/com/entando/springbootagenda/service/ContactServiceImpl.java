@@ -46,4 +46,15 @@ public class ContactServiceImpl implements ContactService {
         return new ContactRecord(saved);
     }
 
+    @Override
+    public void updateContact(ContactRecord contactRecord) {
+        contactRepository
+                .findOneById(contactRecord.id())
+                .ifPresent(contact -> {
+                    contact.setName(contactRecord.name());
+                    contact.setLastname(contactRecord.lastname());
+                    contact.setAddress(contactRecord.address());
+                    contact.setPhone(contactRecord.phone());
+                });
+    }
 }
