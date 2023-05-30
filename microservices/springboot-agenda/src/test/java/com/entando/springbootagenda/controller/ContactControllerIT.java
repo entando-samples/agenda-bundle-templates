@@ -1,9 +1,19 @@
 package com.entando.springbootagenda.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.entando.springbootagenda.SpringbootAgendaApplication;
 import com.entando.springbootagenda.config.PostgreSqlTestContainer;
 import com.entando.springbootagenda.model.entity.ContactEntity;
+import com.entando.springbootagenda.model.record.ContactRecord;
 import com.entando.springbootagenda.repository.ContactRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,12 +24,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.junit.jupiter.Testcontainers;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
 @SpringBootTest(classes = {SpringbootAgendaApplication.class})
@@ -86,4 +90,30 @@ class ContactControllerIT extends PostgreSqlTestContainer {
                 .andExpect(jsonPath("$.[1].address").value("3 Av bridge street"))
                 .andExpect(jsonPath("$.[1].phone").value("+33145326745"));
     }
+
+    @Test
+    void createContactWithAllFieldsSet() throws Exception {
+        contactMockMvc
+                .perform(post("/api/contact").accept(MediaType.APPLICATION_JSON)
+                        .content(toJSON(new ContactRecord(null, "John", "Doe", "address", "+391234567")))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.id").isNotEmpty())
+                .andExpect(jsonPath("$.name").value("John"))
+                .andExpect(jsonPath("$.lastname").value("Doe"))
+                .andExpect(jsonPath("$.address").value("address"))
+                .andExpect(jsonPath("$.phone").value("+391234567"));
+    }
+
+
+    public static String toJSON(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

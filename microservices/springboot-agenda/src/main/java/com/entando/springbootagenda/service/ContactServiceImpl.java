@@ -1,5 +1,6 @@
 package com.entando.springbootagenda.service;
 
+import com.entando.springbootagenda.model.entity.ContactEntity;
 import com.entando.springbootagenda.model.record.ContactRecord;
 import com.entando.springbootagenda.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,12 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public Page<ContactRecord> getAllContacts(Pageable pageable) {
         return contactRepository.findAll(pageable).map(ContactRecord::new);
+    }
+
+    @Override
+    public ContactRecord save(ContactEntity contact) {
+        ContactEntity saved = contactRepository.save(contact);
+        return new ContactRecord(saved);
     }
 
 }
