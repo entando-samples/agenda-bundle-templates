@@ -15,5 +15,7 @@ public interface ContactService {
 
     ContactRecord save(ContactRecord contact);
 
-    void updateContact(ContactRecord contactRecord);
+    ContactRecord update(ContactRecord contactRecord);
+
+    boolean exists(Long id);
 }

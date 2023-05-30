@@ -13,4 +13,6 @@ import org.springframework.stereotype.Repository;
 public interface ContactRepository extends JpaRepository<ContactEntity, UUID>, PagingAndSortingRepository<ContactEntity, UUID> {
 
     Optional<ContactEntity> findOneById(Long id);
+
+    boolean existsById(Long id);
 }

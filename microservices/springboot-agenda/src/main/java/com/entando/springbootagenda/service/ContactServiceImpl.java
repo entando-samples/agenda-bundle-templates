@@ -47,14 +47,15 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public void updateContact(ContactRecord contactRecord) {
-        contactRepository
-                .findOneById(contactRecord.id())
-                .ifPresent(contact -> {
-                    contact.setName(contactRecord.name());
-                    contact.setLastname(contactRecord.lastname());
-                    contact.setAddress(contactRecord.address());
-                    contact.setPhone(contactRecord.phone());
-                });
+    public ContactRecord update(ContactRecord contactRecord) {
+        ContactEntity contact = contactMapper.toEntity(contactRecord);
+        contactRepository.save(contact);
+
+        return contactMapper.toRecord(contact);
+    }
+
+    @Override
+    public boolean exists(Long id) {
+        return contactRepository.existsById(id);
     }
 }

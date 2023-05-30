@@ -72,20 +72,19 @@ public class ContactController {
                 .body(created);
     }
 
-    @PutMapping("/contacts")
-    public ResponseEntity<String> deleteContact(@RequestBody ContactRecord contactRecord) {
-        log.debug("REST request to update contact: {}", contactRecord.name());
+    @PutMapping("/contacts/{id}")
+    public ResponseEntity<ContactRecord> updateContact(@PathVariable(value = "id") final Long id, @RequestBody ContactRecord contact) {
+        log.debug("REST request to update contact: {}", id);
 
-        if(contactRecord.id() == null) {
+        if(id == null || !Objects.equals(id, contact.id())) {
             return ResponseEntity.badRequest().build();
         }
-
-        if(contactService.getContact(contactRecord.id()).isEmpty()) {
+        if(!contactService.exists(id)) {
             return ResponseEntity.notFound().build();
         }
 
-        contactService.updateContact(contactRecord);
+        ContactRecord savedContact = contactService.update(contact);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(savedContact);
     }
 }
