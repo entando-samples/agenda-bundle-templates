@@ -1,5 +1,6 @@
 package com.entando.springbootagenda.controller;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -95,6 +96,7 @@ class ContactControllerIT extends PostgreSqlTestContainer {
     void createContactWithAllFieldsSet() throws Exception {
         contactMockMvc
                 .perform(post("/api/contact").accept(MediaType.APPLICATION_JSON)
+                        .with(csrf())
                         .content(toJSON(new ContactRecord(null, "John", "Doe", "address", "+391234567")))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
