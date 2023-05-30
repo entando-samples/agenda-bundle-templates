@@ -3,6 +3,7 @@ package com.entando.springbootagenda.service;
 import com.entando.springbootagenda.model.entity.ContactEntity;
 import com.entando.springbootagenda.model.record.ContactRecord;
 import com.entando.springbootagenda.repository.ContactRepository;
+import com.entando.springbootagenda.service.mapper.ContactMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,9 +16,12 @@ public class ContactServiceImpl implements ContactService {
 
     private final ContactRepository contactRepository;
 
+    public final ContactMapper contactMapper;
+
     @Autowired
-    public ContactServiceImpl(ContactRepository contactRepository) {
+    public ContactServiceImpl(ContactRepository contactRepository, ContactMapper contactMapper) {
         this.contactRepository = contactRepository;
+        this.contactMapper = contactMapper;
     }
 
     @Override
@@ -36,8 +40,9 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public ContactRecord save(ContactEntity contact) {
-        ContactEntity saved = contactRepository.save(contact);
+    public ContactRecord save(ContactRecord contact) {
+        ContactEntity entity = contactMapper.toEntity(contact);
+        ContactEntity saved = contactRepository.save(entity);
         return new ContactRecord(saved);
     }
 

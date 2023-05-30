@@ -1,11 +1,22 @@
 package com.entando.springbootagenda.controller;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.entando.springbootagenda.SpringbootAgendaApplication;
 import com.entando.springbootagenda.config.PostgreSqlTestContainer;
 import com.entando.springbootagenda.model.entity.ContactEntity;
 import com.entando.springbootagenda.model.record.ContactRecord;
 import com.entando.springbootagenda.repository.ContactRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,13 +27,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.junit.jupiter.Testcontainers;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
 @SpringBootTest(classes = {SpringbootAgendaApplication.class})
@@ -127,7 +131,8 @@ class ContactControllerIT extends PostgreSqlTestContainer {
     @Transactional
     void deleteUserWithId1ShouldDeleteTheUserInDb() throws Exception {
         contactMockMvc
-                .perform(delete("/api/contacts/1").accept(MediaType.APPLICATION_JSON))
+                .perform(delete("/api/contacts/1").accept(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
                 .andExpect(status().isNoContent());
 
         assertThat(contactRepository.findOneById(1L)).isNotPresent();
@@ -137,7 +142,8 @@ class ContactControllerIT extends PostgreSqlTestContainer {
     @Transactional
     void deleteANonExistingShouldReturnA204() throws Exception {
         contactMockMvc
-                .perform(delete("/api/contacts/1234").accept(MediaType.APPLICATION_JSON))
+                .perform(delete("/api/contacts/1234").accept(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
                 .andExpect(status().isNoContent());
     }
 
@@ -145,6 +151,7 @@ class ContactControllerIT extends PostgreSqlTestContainer {
     void createContactWithAllFieldsSet() throws Exception {
         contactMockMvc
                 .perform(post("/api/contact").accept(MediaType.APPLICATION_JSON)
+                        .with(csrf())
                         .content(toJSON(new ContactRecord(null, "John", "Doe", "address", "+391234567")))
                         .contentType(MediaType.APPLICATION_JSON)
                 )

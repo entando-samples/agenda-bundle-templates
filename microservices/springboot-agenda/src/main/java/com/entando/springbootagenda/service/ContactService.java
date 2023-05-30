@@ -14,5 +14,5 @@ public interface ContactService {
 
     void delete(Long id);
 
-    ContactRecord save(ContactEntity contact);
+    ContactRecord save(ContactRecord contact);
 }

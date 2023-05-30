@@ -64,4 +64,12 @@ public class ContactController {
 
         return ResponseEntity.noContent().build();
     }
+
+
+  @PostMapping("/contact")
+    public ResponseEntity<ContactRecord> createContact(@RequestBody ContactRecord contact) {
+        log.debug("REST request to create a NEW contact: " + contact);
+        ContactRecord created = contactService.save(contact);
+        return new ResponseEntity<>(created, HttpStatus.CREATED);
+    }
 }
