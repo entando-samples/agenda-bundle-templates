@@ -14,9 +14,8 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
-        return http.csrf()
-                .disable()
-                .securityMatcher("/**")
+
+        return http
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
                 .build();
