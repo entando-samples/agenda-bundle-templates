@@ -1,13 +1,10 @@
 package com.entando.springbootagenda.service.mapper;
 
-import static net.bytebuddy.matcher.ElementMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import com.entando.springbootagenda.model.entity.ContactEntity;
 import com.entando.springbootagenda.model.record.ContactRecord;
-import java.util.Optional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

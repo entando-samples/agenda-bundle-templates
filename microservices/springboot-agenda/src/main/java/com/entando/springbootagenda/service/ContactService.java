@@ -1,6 +1,5 @@
 package com.entando.springbootagenda.service;
 
-import com.entando.springbootagenda.model.entity.ContactEntity;
 import com.entando.springbootagenda.model.record.ContactRecord;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
