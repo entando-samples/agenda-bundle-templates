@@ -14,4 +14,6 @@ public interface ContactService {
     void delete(Long id);
 
     ContactRecord save(ContactRecord contact);
+
+    void updateContact(ContactRecord contactRecord);
 }
