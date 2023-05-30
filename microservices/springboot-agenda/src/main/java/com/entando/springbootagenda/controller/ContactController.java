@@ -11,13 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -62,11 +56,27 @@ public class ContactController {
         return ResponseEntity.noContent().build();
     }
 
-
   @PostMapping("/contact")
     public ResponseEntity<ContactRecord> createContact(@RequestBody ContactRecord contact) {
         log.debug("REST request to create a NEW contact: {}", contact );
         ContactRecord created = contactService.save(contact);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/contacts")
+    public ResponseEntity<String> deleteContact(@RequestBody ContactRecord contactRecord) {
+        log.debug("REST request to update contact: {}", contactRecord.name());
+
+        if(contactRecord.id() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if(contactService.getContact(contactRecord.id()).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        contactService.updateContact(contactRecord);
+
+        return ResponseEntity.ok().build();
     }
 }
