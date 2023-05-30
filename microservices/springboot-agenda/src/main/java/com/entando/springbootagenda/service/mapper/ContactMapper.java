@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class ContactMapper {
 
-    public ContactEntity toEntity(ContactRecord record) {
-        ContactEntity entity = new ContactEntity();
-        BeanUtils.copyProperties(record, entity);
-        return entity;
+    public ContactEntity toEntity(ContactRecord recordIn) {
+        ContactEntity entityOut = new ContactEntity();
+        BeanUtils.copyProperties(recordIn, entityOut);
+        return entityOut;
     }
 
     public ContactRecord toRecord(ContactEntity entity) {
