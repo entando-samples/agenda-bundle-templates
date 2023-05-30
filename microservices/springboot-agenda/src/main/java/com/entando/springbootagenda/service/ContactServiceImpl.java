@@ -26,12 +26,12 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public Page<ContactRecord> getAllContacts(Pageable pageable) {
-        return contactRepository.findAll(pageable).map(ContactRecord::new);
+        return contactRepository.findAll(pageable).map(contactMapper::toRecord);
     }
 
     @Override
     public Optional<ContactRecord> getContact(Long id) {
-        return contactRepository.findOneById(id).map(ContactRecord::new);
+        return contactRepository.findOneById(id).map(contactMapper::toRecord);
     }
 
     @Override
