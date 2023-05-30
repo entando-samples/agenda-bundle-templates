@@ -6,6 +6,8 @@ import com.entando.springbootagenda.service.ContactService;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Objects;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +67,9 @@ public class ContactController {
 
         ContactRecord created = contactService.save(contact);
 
-        return ResponseEntity.created(new URI("/api/contacts/" + created.id())).build();
+        return ResponseEntity
+                .created(new URI("/api/contacts/" + created.id()))
+                .body(created);
     }
 
     @PutMapping("/contacts")
