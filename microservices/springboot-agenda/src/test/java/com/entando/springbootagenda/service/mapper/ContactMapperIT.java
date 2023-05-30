@@ -24,7 +24,7 @@ public class ContactMapperIT {
         final ContactRecord record = getContactRecordForTest();
         final ContactEntity entity = mapper.toEntity(record);
         assertNotNull(entity);
-        assertEquals((long)2677, (long)entity.getId());
+        assertEquals(2677, (long)entity.getId());
         assertEquals("John", entity.getName());
         assertEquals("Doe", entity.getLastname());
         assertEquals("Pennylane ave.", entity.getAddress());
@@ -37,7 +37,7 @@ public class ContactMapperIT {
         final ContactRecord record = mapper.toRecord(entity);
 
         assertNotNull(entity);
-        assertEquals((long)2677, (long)record.id());
+        assertEquals(2677, (long)record.id());
         assertEquals("John", record.name());
         assertEquals("Doe", record.lastname());
         assertEquals("Pennylane ave.", record.address());
