@@ -219,6 +219,21 @@ class ContactControllerIT extends PostgreSqlTestContainer {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    @Transactional
+    void updateARecordWithDifferentIdsABadRequestCode() throws Exception {
+        ContactRecord contactUpdated = new ContactRecord(1L, "", "", "", "");
+
+        contactMockMvc
+                .perform(put("/api/contacts/2")
+                        .with(csrf())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(toJSON(contactUpdated))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isBadRequest());
+    }
+
     private static String toJSON(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);
