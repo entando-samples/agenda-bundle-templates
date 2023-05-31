@@ -2,7 +2,10 @@ package com.entando.springbootagenda.controller;
 
 import com.entando.springbootagenda.model.record.ContactRecord;
 import com.entando.springbootagenda.service.ContactService;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,10 +66,17 @@ public class ContactController {
     }
 
 
-  @PostMapping("/contact")
-    public ResponseEntity<ContactRecord> createContact(@RequestBody ContactRecord contact) {
-        log.debug("REST request to create a NEW contact: {}", contact );
-        ContactRecord created = contactService.save(contact);
-        return new ResponseEntity<>(created, HttpStatus.CREATED);
+    @PostMapping("/contact")
+    public ResponseEntity<String> createContact(@RequestBody ContactRecord contact) {
+        log.debug("REST request to create a NEW contact");
+
+        try {
+            ContactRecord saved = contactService.save(contact);
+            return ResponseEntity.created(new URI("/api/contacts/" + saved.id())).build();
+        } catch (URISyntaxException t) {
+            return ResponseEntity.internalServerError()
+                    .body("");
+        }
     }
+    
 }

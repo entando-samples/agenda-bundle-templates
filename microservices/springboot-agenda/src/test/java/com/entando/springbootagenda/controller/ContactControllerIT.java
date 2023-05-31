@@ -1,13 +1,13 @@
 package com.entando.springbootagenda.controller;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.assertj.core.api.Assertions.assertThat;
 
 import com.entando.springbootagenda.SpringbootAgendaApplication;
 import com.entando.springbootagenda.config.PostgreSqlTestContainer;
@@ -131,8 +131,7 @@ class ContactControllerIT extends PostgreSqlTestContainer {
     @Transactional
     void deleteUserWithId1ShouldDeleteTheUserInDb() throws Exception {
         contactMockMvc
-                .perform(delete("/api/contacts/1").accept(MediaType.APPLICATION_JSON)
-                        .with(csrf()))
+                .perform(delete("/api/contacts/1").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 
         assertThat(contactRepository.findOneById(1L)).isNotPresent();
@@ -142,26 +141,32 @@ class ContactControllerIT extends PostgreSqlTestContainer {
     @Transactional
     void deleteANonExistingShouldReturnA204() throws Exception {
         contactMockMvc
-                .perform(delete("/api/contacts/1234").accept(MediaType.APPLICATION_JSON)
-                        .with(csrf()))
+                .perform(delete("/api/contacts/1234").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
     }
 
- @Test
+    @Test
     void createContactWithAllFieldsSet() throws Exception {
         contactMockMvc
-                .perform(post("/api/contact").accept(MediaType.APPLICATION_JSON)
-                        .with(csrf())
+                .perform(post("/api/contact")
+                        .accept(MediaType.APPLICATION_JSON)
                         .content(toJSON(new ContactRecord(null, "John", "Doe", "address", "+391234567")))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isCreated())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.id").isNotEmpty())
-                .andExpect(jsonPath("$.name").value("John"))
-                .andExpect(jsonPath("$.lastname").value("Doe"))
-                .andExpect(jsonPath("$.address").value("address"))
-                .andExpect(jsonPath("$.phone").value("+391234567"));
+                .andExpect(redirectedUrlPattern("/api/contacts/*"));
+    }
+
+    @Test
+    void createContactWithinvalidData() throws Exception {
+        contactMockMvc
+                .perform(post("/api/contact")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content("")
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(""));
     }
 
 
