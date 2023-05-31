@@ -5,7 +5,7 @@ import com.entando.springbootagenda.service.ContactService;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -65,7 +66,6 @@ public class ContactController {
         return ResponseEntity.noContent().build();
     }
 
-
     @PostMapping("/contact")
     public ResponseEntity<String> createContact(@RequestBody ContactRecord contact) {
         log.debug("REST request to create a NEW contact");
@@ -78,5 +78,19 @@ public class ContactController {
                     .body("");
         }
     }
-    
+    @PutMapping("/contacts/{id}")
+    public ResponseEntity<ContactRecord> updateContact(@PathVariable(value = "id") final Long id, @RequestBody ContactRecord contact) {
+        log.debug("REST request to update contact: {}", id);
+
+        if(id == null || !Objects.equals(id, contact.id())) {
+            return ResponseEntity.badRequest().build();
+        }
+        if(!contactService.exists(id)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        ContactRecord savedContact = contactService.update(contact);
+
+        return ResponseEntity.ok().body(savedContact);
+    }
 }
