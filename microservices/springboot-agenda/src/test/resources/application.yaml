@@ -27,7 +27,3 @@ spring:
     init:
       continue-on-error: true
       mode: always
-
-
-app:
-  allowed-api-origin: "*"

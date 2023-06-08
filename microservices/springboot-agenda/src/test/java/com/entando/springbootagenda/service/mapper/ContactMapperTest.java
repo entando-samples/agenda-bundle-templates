@@ -37,12 +37,7 @@ public class ContactMapperTest {
         assertEquals("+331234567", record.phone());
     }
     private ContactRecord getContactRecordForTest() {
-        final ContactEntity entity = getContactEntityForTest();
-        return new ContactRecord(entity.getId(),
-                entity.getName(),
-                entity.getLastname(),
-                entity.getAddress(),
-                entity.getPhone());
+        return new ContactRecord(getContactEntityForTest());
     }
 
     private ContactEntity getContactEntityForTest() {

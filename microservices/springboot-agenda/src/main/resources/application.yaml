@@ -16,27 +16,3 @@ spring:
       hibernate.cache.use_query_cache: false
       hibernate.generate_statistics: false
       hibernate.format_sql: true
-
-
-  security:
-    application:
-      name: springboot-keycloak
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: ${SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI:http://localhost:9080/auth/realms/agenda}
-          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
-
-jwt:
-  auth:
-    converter:
-      resource-id: ${SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID:internal}
-      principal-attribute: preferred_username
-
-logging:
-  level:
-    org.springframework.security: DEBUG
-
-# CORS Configurations
-app:
-  allowed-api-origin: "*"

@@ -19,10 +19,10 @@
     } ],
     "disableableCredentialTypes" : [ ],
     "requiredActions" : [ ],
-    "realmRoles" : [ "app_admin", "offline_access", "uma_authorization" ],
+    "realmRoles" : [ "offline_access", "uma_authorization" ],
     "clientRoles" : {
       "realm-management" : [ "view-users" ],
-      "internal" : [ "admin" ],
+      "internal" : [ "agenda-admin" ],
       "account" : [ "view-profile", "manage-account" ]
     },
     "notBefore" : 0,
@@ -41,36 +41,11 @@
     "requiredActions" : [ ],
     "realmRoles" : [ "offline_access", "uma_authorization" ],
     "clientRoles" : {
-      "internal" : [ "uma_protection", "client-role", "admin" ],
+      "internal" : [ "uma_protection" ],
       "realm-management" : [ "realm-admin" ],
       "account" : [ "view-profile", "manage-account" ]
     },
     "notBefore" : 0,
     "groups" : [ ]
-  }, {
-    "id" : "ce372816-22c7-429d-a99e-65c6bc3eb78d",
-    "createdTimestamp" : 1685630170077,
-    "username" : "user",
-    "enabled" : true,
-    "totp" : false,
-    "emailVerified" : true,
-    "firstName" : "Utente",
-    "lastName" : "Utente",
-    "email" : "user@email.it",
-    "credentials" : [ {
-      "id" : "d150df48-b517-448f-8e21-bc42cdae1cec",
-      "type" : "password",
-      "createdDate" : 1685630203878,
-      "secretData" : "{\"value\":\"7OFcDMQ5TJ03UWaJWf6Fw6sRICEwI+z4SqxJOHf22gTWUZq3Jf0u+F3KPpbUjmgrXFQOvVYc15BcxD5QYfv2wQ==\",\"salt\":\"ONo+jmlehL5nNb0u7mr/2w==\",\"additionalParameters\":{}}",
-      "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
-    } ],
-    "disableableCredentialTypes" : [ ],
-    "requiredActions" : [ ],
-    "realmRoles" : [ "default-roles-agenda", "app_user" ],
-    "clientRoles" : {
-      "internal" : [ "user" ]
-    },
-    "notBefore" : 0,
-    "groups" : [ ]
-  } ]
+  }]
 }
