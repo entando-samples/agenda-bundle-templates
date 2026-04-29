@@ -12,5 +12,8 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 COPY index.html /usr/share/nginx/html/index.html
 
+
+RUN cat /usr/share/nginx/html/widgets/react-widget-agenda/mfe-config.json >&2
+
 EXPOSE 80
 

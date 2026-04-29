@@ -1,0 +1,8 @@
+name: springboot-agenda
+descriptorVersion: v6
+dbms: postgresql
+image: origins/springboot-agenda:0.0.1-snapshot
+healthCheckPath: /actuator/health
+roles:
+  - admin
+  - user

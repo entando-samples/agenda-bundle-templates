@@ -1,0 +1,14 @@
+name: react-widget-agenda
+type: widget
+titles:
+  en: react-widget-agenda
+  it: react-widget-agenda
+group: free
+descriptorVersion: v5
+customElement: react-widget-agenda
+apiClaims:
+  - type: internal
+    name: springboot-agenda-api
+    pluginName: springboot-agenda
+params: []
+widgetCategory: Agenda

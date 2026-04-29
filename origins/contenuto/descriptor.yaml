@@ -1,0 +1,12 @@
+name: agenda-bundle-templates
+description: agenda-bundle-templates description
+components:
+  widgets:
+    - widgets/vue-widget-agenda.yaml
+    - widgets/angular-widget-agenda.yaml
+    - widgets/react-widget-agenda.yaml
+  plugins:
+    - plugins/springboot-agenda.yaml
+  fragments:
+    - fragments/zone-polyfill-descriptor.yaml
+descriptorVersion: v6

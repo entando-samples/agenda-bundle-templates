@@ -1,0 +1,44 @@
+apiVersion: entando.org/v1
+kind: EntandoDeBundle
+metadata:
+  annotations:
+    entando.org/tenants: primary,tenant1
+  labels:
+    bundle-type: standard-bundle
+    fragment: "true"
+    plugin: "true"
+    widget: "true"
+  name: agenda-bundle-templates-4a7e8fcf
+spec:
+  details:
+    description: agenda-bundle-templates description
+    dist-tags:
+      latest: 1.0.2
+    name: agenda-bundle-templates
+    versions:
+    - 1.0.2
+    - 0.1.2
+    - 0.0.7
+    - 0.0.6
+    - 0.0.4
+    - 0.0.3
+    - 0.0.2
+    - 0.0.1
+  tags:
+  - tarball: docker://registry.hub.docker.com/jangalian/agenda-bundle-templates
+    version: 1.0.2
+  - tarball: docker://registry.hub.docker.com/jangalian/agenda-bundle-templates
+    version: 0.1.2
+  - tarball: docker://registry.hub.docker.com/jangalian/agenda-bundle-templates
+    version: 0.0.7
+  - tarball: docker://registry.hub.docker.com/jangalian/agenda-bundle-templates
+    version: 0.0.6
+  - tarball: docker://registry.hub.docker.com/jangalian/agenda-bundle-templates
+    version: 0.0.4
+  - tarball: docker://registry.hub.docker.com/jangalian/agenda-bundle-templates
+    version: 0.0.3
+  - tarball: docker://registry.hub.docker.com/jangalian/agenda-bundle-templates
+    version: 0.0.2
+  - tarball: docker://registry.hub.docker.com/jangalian/agenda-bundle-templates
+    version: 0.0.1
+

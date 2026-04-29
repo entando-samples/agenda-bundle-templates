@@ -1,0 +1,6 @@
+name: cdp-innova-bundle
+description: cdp-innova-be-bundle-v5 description
+components:
+  plugins:
+    - plugins/cdp-innova-be-bundle.yaml
+descriptorVersion: v6

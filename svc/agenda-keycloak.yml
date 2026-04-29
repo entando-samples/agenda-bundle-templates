@@ -3,6 +3,7 @@ version: '3.7'
 services:
   agenda-keycloak:
     image: entando/entando-keycloak:7.2.0
+    user: "${UID}:${GID}"  
     restart: always
     command: [
         '-b',

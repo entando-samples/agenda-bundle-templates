@@ -1,0 +1,47 @@
+name: cdp-innova-be-bundle
+descriptorVersion: v6
+dbms: none
+image: jangalian/cdp-innova-be-bundle:0.0.1-SNAPSHOT-dev
+healthCheckPath: /management/health
+roles:
+  - innova-admin
+environmentVariables:
+  - name: APPLICATION_FRONTEND_URL
+    value: https://innova-portali-entando-dev.cdp.it/cdp-innova-bundle-4ab35a56-8d3b9db3/cdp-innova-be-bundle
+  - name: DATASOURCE_JDBC_URL
+    value: jdbc:postgresql://cdpvlentdato01s:5432/DB_ENTANDO_INNOVA_APP_DEV?currentSchema=innova_plugindb
+  - name: DATASOURCE_USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: 4ab35a56-cdp-innova-be
+        key: _DATASOURCE_USERNAME
+  - name: DATASOURCE_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: 4ab35a56-cdp-innova-be
+        key: _DATASOURCE_PASSWORD
+  - name: COGNISTREAM_BASE_URL
+    value: https://cdp-staging.cognistreamer.com
+  - name: COGNISTREAM_CLIENT_ID
+    valueFrom:
+      secretKeyRef:
+        name: 4ab35a56-cdp-innova-be
+        key: _COGNISTREAM_CLIENT_ID
+  - name: COGNISTREAM_CLIENT_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: 4ab35a56-cdp-innova-be
+        key: _COGNISTREAM_CLIENT_SECRET
+  - name: SMTP_HOST
+    value: relay.cdp.it
+  - name: SMTP_USER
+    value: notifica_dwp@cdp.it
+  - name: SMTP_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: 4ab35a56-cdp-innova-be
+        key: _SMTP_PASSWORD
+  - name: NOTIFICATIONS_TO_EMAILS
+    value: innova@cdp-it, andrea.meo@cdp.it
+  - name: security.disable-auth
+    value: "true"

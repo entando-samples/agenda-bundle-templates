@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <title>AngularWidget</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <script src="http://localhost:9080/auth/js/keycloak.js"></script>
+  <script>
+    const onLoad = (function() {
+      function createKcDispatcher(payload) {
+        return () => window.dispatchEvent(new CustomEvent('keycloak', { detail: payload }));
+      }
+
+      function initKeycloak() {
+        const keycloak = Keycloak({
+          url: 'http://localhost:9080/auth',
+          realm: 'agenda',
+          clientId: 'web_app'
+        });
+
+        keycloak.onReady = createKcDispatcher({ eventType: 'onReady' });
+        keycloak.onAuthSuccess = createKcDispatcher({ eventType: 'onAuthSuccess' });
+        keycloak.onAuthError = createKcDispatcher({ eventType: 'onAuthError' });
+        keycloak.onAuthRefreshSuccess = createKcDispatcher({
+          eventType: 'onAuthRefreshSuccess'
+        });
+        keycloak.onAuthRefreshError = createKcDispatcher({
+          eventType: 'onAuthRefreshError'
+        });
+        keycloak.onAuthLogout = createKcDispatcher({ eventType: 'onAuthLogout' });
+        keycloak.onTokenExpired = createKcDispatcher({ eventType: 'onTokenExpired' });
+        const onInit = createKcDispatcher({ eventType: 'onInit' });
+
+        window.entando = {
+          ...(window.entando || {}),
+          keycloak
+        };
+
+        //If you are locally running the widget in isolation and you are not logged in,
+        //you are automatically redirected to keycloak login page to speed up development.
+
+        const onLoad = window.location.hostname === 'localhost' ? 'login-required' : 'check-sso';
+        const silentCheckSsoRedirectUri = window.location.origin + '/silent-check-sso.html';
+
+        window.entando.keycloak.init({ onLoad, silentCheckSsoRedirectUri }).success(onInit);
+      }
+      return initKeycloak;
+    })();
+  </script>
+<style>*,::before,::after{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::before,::after{--tw-content:''}html{line-height:1.5;-webkit-text-size-adjust:100%;tab-size:4;font-family:ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal}body{margin:0;line-height:inherit}:root{background-color:hsla(var(--b1) / var(--tw-bg-opacity, 1));color:hsla(var(--bc) / var(--tw-text-opacity, 1))}html{-webkit-tap-highlight-color:transparent}:root{--p:142.09 70.563% 45.294%;--pf:142.09 70.563% 36.235%;--sf:280 14.754% 9.5686%;--af:201.94 51.381% 51.608%;--nf:280 14.754% 9.5686%;--b2:0 0% 90%;--b3:0 0% 81%;--bc:0 0% 20%;--pc:142.09 100% 9.0588%;--sc:280 22.049% 82.392%;--ac:201.94 100% 12.902%;--nc:280 22.049% 82.392%;--inc:202.92 100% 10.824%;--suc:159.04 100% 12.392%;--wac:42 100% 13.02%;--erc:5.1064 100% 13.216%;--rounded-box:1rem;--rounded-btn:0.5rem;--rounded-badge:1.9rem;--animation-btn:0.25s;--animation-input:.2s;--btn-text-case:uppercase;--btn-focus-scale:0.95;--border-btn:1px;--tab-border:1px;--tab-radius:0.5rem;--s:280 14.754% 11.961%;--a:201.94 51.381% 64.51%;--n:280 14.754% 11.961%;--b1:0 0% 100%;--in:202.92 76.068% 54.118%;--su:159.04 75.258% 61.961%;--wa:42 95.506% 65.098%;--er:5.1064 81.503% 66.078%}@media (prefers-color-scheme: dark){:root{color-scheme:dark;--pf:262.35 80.315% 40.157%;--sf:315.75 70.196% 40%;--af:174.69 70.335% 32.784%;--in:198 93% 60%;--su:158 64% 52%;--wa:43 96% 56%;--er:0 91% 71%;--inc:198 100% 12%;--suc:158 100% 10%;--wac:43 100% 11%;--erc:0 100% 14%;--rounded-box:1rem;--rounded-btn:0.5rem;--rounded-badge:1.9rem;--animation-btn:0.25s;--animation-input:.2s;--btn-text-case:uppercase;--btn-focus-scale:0.95;--border-btn:1px;--tab-border:1px;--tab-radius:0.5rem;--p:262.35 80.315% 50.196%;--pc:0 0% 100%;--s:315.75 70.196% 50%;--sc:0 0% 100%;--a:174.69 70.335% 40.98%;--ac:0 0% 100%;--n:218.18 18.033% 11.961%;--nf:222.86 17.073% 8.0392%;--nc:220 13.376% 69.216%;--b1:220 17.647% 20%;--b2:220 17.241% 17.059%;--b3:218.57 17.949% 15.294%;--bc:220 13.376% 69.216%}}*,::before,::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x:  ;--tw-pan-y:  ;--tw-pinch-zoom:  ;--tw-scroll-snap-strictness:proximity;--tw-ordinal:  ;--tw-slashed-zero:  ;--tw-numeric-figure:  ;--tw-numeric-spacing:  ;--tw-numeric-fraction:  ;--tw-ring-inset:  ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur:  ;--tw-brightness:  ;--tw-contrast:  ;--tw-grayscale:  ;--tw-hue-rotate:  ;--tw-invert:  ;--tw-saturate:  ;--tw-sepia:  ;--tw-drop-shadow:  ;--tw-backdrop-blur:  ;--tw-backdrop-brightness:  ;--tw-backdrop-contrast:  ;--tw-backdrop-grayscale:  ;--tw-backdrop-hue-rotate:  ;--tw-backdrop-invert:  ;--tw-backdrop-opacity:  ;--tw-backdrop-saturate:  ;--tw-backdrop-sepia:  }</style><link rel="stylesheet" href="styles.73d6d17fc3545100.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles.73d6d17fc3545100.css"></noscript></head>
+<body onload="onLoad();">
+  <angular-widget-agenda></angular-widget-agenda>
+<script src="main.4410871151704466.js" type="module"></script>
+
+</body></html>
